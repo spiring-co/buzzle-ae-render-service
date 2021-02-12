@@ -59,16 +59,11 @@ export default async function (data: any, eventType: string): Promise<boolean> {
         });
         console.log(e);
       } finally {
+        const logPath = `${path.join(process.cwd(), "renders")}/aerender-${ job.uid }.log`;
         // update logs
-        await updateJob(job.uid, {
-          logs: {
-            label: "ae",
-            text: fs.readFileSync(
-              `${path.join(process.cwd(), "renders")}/aerender-${job.uid}.log`,
-              "utf8"
-            ),
-          },
-        });
+        if (fs.existsSync(logPath)) {
+          await updateJob(job.uid, { logs: { label: "ae", text: fs.readFileSync(logPath, "utf8"), }, });
+        }
 
         runningInstance = null;
         currentJob = null;
