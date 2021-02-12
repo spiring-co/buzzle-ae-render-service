@@ -35,7 +35,10 @@ export default async function (data: any, eventType: string): Promise<boolean> {
         job = toNexrenderJob(data);
 
         // update status to started on API
-        await updateJob(job.uid, { state: "started" });
+        await updateJob(job.uid, {
+          state: "started",
+          dateStarted: new Date().toISOString(),
+        });
 
         // TODO add socket implementation
         job.onRenderProgress = (job, progress) => console.log(progress);
@@ -46,8 +49,14 @@ export default async function (data: any, eventType: string): Promise<boolean> {
         await updateJob(job.uid, {
           output: { label: "new", src: job.output },
           state: "finished",
+          dateFinished: new Date().toISOString(),
         });
       } catch (e) {
+        await updateJob(job.uid, {
+          state: "error",
+          dateFinished: new Date().toISOString(),
+          failureReason: e.message,
+        });
         console.log(e);
       } finally {
         // update logs
