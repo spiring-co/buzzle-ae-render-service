@@ -27,53 +27,45 @@ const settings = {
 
 // returns true if consumed message successfully
 export default async function (data: any, eventType: string): Promise<boolean> {
+  let job;
   switch (eventType) {
     case "created":
-      let job;
-
-      // convert to nexrender job
       try {
+        // convert to nexrender job
         job = toNexrenderJob(data);
-      } catch {
-        console.log("Couldn't parse job from data rejecting message.");
-        return false;
-      }
 
-      // update status to started on API
-      const response = await updateJob(job.uid, { state: "started" });
-      console.log(await response.json());
+        // update status to started on API
+        await updateJob(job.uid, { state: "started" });
 
-      // TODO add socket implementation
-      job.onRenderProgress = (job, progress) => console.log(progress);
+        // TODO add socket implementation
+        job.onRenderProgress = (job, progress) => console.log(progress);
 
-      try {
         job = await render(job, settings);
 
         // update output and status on API
-        const response = await updateJob(job.uid, {
+        await updateJob(job.uid, {
           output: { label: "new", src: job.output },
           state: "finished",
         });
-        console.log(await response.json());
-      } catch (err) {
-        console.error(err);
-        throw err;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        // update logs
+        await updateJob(job.uid, {
+          logs: {
+            label: "ae",
+            text: fs.readFileSync(
+              `${path.join(process.cwd(), "renders")}/aerender-${job.uid}.log`,
+              "utf8"
+            ),
+          },
+        });
+
+        runningInstance = null;
+        currentJob = null;
       }
 
-      // update logs
-      await updateJob(job.uid, {
-        logs: {
-          label: "ae",
-          text: fs.readFileSync(
-            `${path.join(process.cwd(), "renders")}/aerender-${job.uid}.log`,
-            "utf8"
-          ),
-        },
-      });
-
-      runningInstance = null;
-      currentJob = null;
-      break;
+      return true;
 
     case "updated":
       break;
