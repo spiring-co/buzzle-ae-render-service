@@ -1,17 +1,19 @@
-import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
-import toNexrenderJob from "../helpers/toNexrenderJob";
 import fetch from "node-fetch";
+import * as dotenv from "dotenv";
+import { io } from "socket.io-client";
 import { render } from "@nexrender/core";
 import { ChildProcess } from "child_process";
+import toNexrenderJob from "../helpers/toNexrenderJob";
 
 dotenv.config();
+const { API_URL, SOCKET_SERVER } = process.env;
 
-const { API_URL } = process.env;
+const socket = io(SOCKET_SERVER);
 
-let runningInstance: ChildProcess = null;
 let currentJob: string = null;
+let runningInstance: ChildProcess = null;
 
 const settings = {
   stopOnError: true,
@@ -27,7 +29,9 @@ const settings = {
 
 // returns true if consumed message successfully
 export default async function (data: any, eventType: string): Promise<boolean> {
+  
   let job;
+
   switch (eventType) {
     case "created":
       try {
@@ -39,10 +43,18 @@ export default async function (data: any, eventType: string): Promise<boolean> {
           state: "started",
           dateStarted: new Date().toISOString(),
         });
+         socket.emit("job-progress", job, {
+           state: "started",
+         });
 
         // TODO add socket implementation
-        job.onRenderProgress = (job, progress) => console.log(progress);
-
+        job.onRenderProgress = (job, progress) => {
+          socket.emit("job-progress", job, {
+            state: "Rendering",
+            progress,
+          });
+        };
+       
         job = await render(job, settings);
 
         // update output and status on API
@@ -51,18 +63,30 @@ export default async function (data: any, eventType: string): Promise<boolean> {
           state: "finished",
           dateFinished: new Date().toISOString(),
         });
+
+        socket.emit("job-progress", job, {
+          state: "finished",
+        });
+
       } catch (e) {
         await updateJob(job.uid, {
           state: "error",
           dateFinished: new Date().toISOString(),
           failureReason: e.message,
         });
+        socket.emit("job-progress", job, {
+          state: "error",
+        });
         console.log(e);
       } finally {
-        const logPath = `${path.join(process.cwd(), "renders")}/aerender-${ job.uid }.log`;
+        const logPath = `${path.join(process.cwd(), "renders")}/aerender-${
+          job.uid
+        }.log`;
         // update logs
         if (fs.existsSync(logPath)) {
-          await updateJob(job.uid, { logs: { label: "ae", text: fs.readFileSync(logPath, "utf8"), }, });
+          await updateJob(job.uid, {
+            logs: { label: "ae", text: fs.readFileSync(logPath, "utf8") },
+          });
         }
 
         runningInstance = null;
@@ -72,6 +96,7 @@ export default async function (data: any, eventType: string): Promise<boolean> {
       return true;
 
     case "updated":
+      console.log(data)
       break;
 
     case "deleted":

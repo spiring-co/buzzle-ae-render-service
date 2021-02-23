@@ -109,6 +109,5 @@ export default function (job) {
     assets: [...job.videoTemplate.staticAssets, ...assets],
     actions: { prerender, postrender },
   };
-  console.log(JSON.stringify(nxJob, null, 4));
   return nxJob;
 }
