@@ -8,14 +8,14 @@ import { ChildProcess } from "child_process";
 import toNexrenderJob from "../helpers/toNexrenderJob";
 
 dotenv.config();
-const { API_URL, SOCKET_SERVER } = process.env;
+const { API_URL, SOCKET_SERVER, API_TOKEN } = process.env;
 
 const socket = io(SOCKET_SERVER);
 
 let currentJob: string = null;
 let runningInstance: ChildProcess = null;
 
-const settings = {
+const settings: any = {
   stopOnError: true,
   workpath: path.join(process.cwd(), "renders"),
   skipCleanup: true,
@@ -27,25 +27,33 @@ const settings = {
   },
 };
 
+const socketLogger = (id) => {
+  return {
+    log: (data) => {
+      socket.emit("job-logs", id, data)
+    }
+  }
+}
+
 // returns true if consumed message successfully
 export default async function (data: any, eventType: string): Promise<boolean> {
-  
+
   let job;
 
   switch (eventType) {
     case "created":
       try {
         // convert to nexrender job
-        job = toNexrenderJob(data);
-
+        job = toNexrenderJob(data.job);
+        settings.logger = socketLogger(job.uid)
         // update status to started on API
         await updateJob(job.uid, {
           state: "started",
           dateStarted: new Date().toISOString(),
         });
-         socket.emit("job-progress", job, {
-           state: "started",
-         });
+        socket.emit("job-progress", job, {
+          state: "started",
+        });
 
         // TODO add socket implementation
         job.onRenderProgress = (job, progress) => {
@@ -54,7 +62,7 @@ export default async function (data: any, eventType: string): Promise<boolean> {
             progress,
           });
         };
-       
+
         job = await render(job, settings);
 
         // update output and status on API
@@ -79,9 +87,8 @@ export default async function (data: any, eventType: string): Promise<boolean> {
         });
         console.log(e);
       } finally {
-        const logPath = `${path.join(process.cwd(), "renders")}/aerender-${
-          job.uid
-        }.log`;
+        const logPath = `${path.join(process.cwd(), "renders")}/aerender-${job.uid
+          }.log`;
         // update logs
         if (fs.existsSync(logPath)) {
           await updateJob(job.uid, {
@@ -96,7 +103,6 @@ export default async function (data: any, eventType: string): Promise<boolean> {
       return true;
 
     case "updated":
-      console.log(data)
       break;
 
     case "deleted":
@@ -106,14 +112,16 @@ export default async function (data: any, eventType: string): Promise<boolean> {
   return true;
 }
 
-const updateJob = (uid, body) => {
-  return fetch(`${API_URL}/jobs/${uid}`, {
+const updateJob = async (uid, body) => {
+  const res = await fetch(`${API_URL}/jobs/${uid}`, {
     method: "PUT",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im9XSXRWSE5xOCIsImVtYWlsIjoic2hpdmFtLjExOTk2NkB5YWhvby5jb20iLCJuYW1lIjoic2hpdmFtIHR5YWdpIiwicm9sZSI6IlVzZXIiLCJpbWFnZVVybCI6Imh0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0xNjAwNjA0NDc3MzcxLTdmMmRkZjc4MmEyYj9peGxpYj1yYi0xLjIuMSZhdXRvPWZvcm1hdCZmaXQ9Y3JvcCZ3PTYxOSZxPTgwIiwiaWF0IjoxNjEyNDI1MzMyLCJleHAiOjE2MTUwMTczMzJ9.2otjeKSiQssL9BfLDJZq6mDehgFYUCzOJxZYIHllTQw",
+        `Bearer ${API_TOKEN}`,
     },
   });
+  const result = await res.json();
+  console.log(result)
 };
