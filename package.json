@@ -7,22 +7,26 @@
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc && node dist/app.js",
-    "dev": "nodemon -e ts  --exec \"npm run compile\""
+    "dev": "nodemon -e ts  --exec \"npm run compile\"",
+    "start-prod": "pm2 start dist/app.js"
   },
   "author": "Harsh Bhatia",
   "license": "ISC",
   "dependencies": {
     "@nexrender/core": "^1.24.3",
     "@nexrender/types": "^1.24.2",
+    "@types/lodash": "^4.14.168",
     "amqplib": "^0.6.0",
     "buzzle-action-add-audio": "https://github.com/spiring-co/buzzle-action-add-audio.git",
-    "buzzle-action-handbrake": "https://github.com/spiring-co/buzzle-action-handbrake.git",
+    "buzzle-action-handbrake": "https://github.com/spiring-co/buzzle-action-handbrake",
     "buzzle-action-merge-videos": "https://github.com/spiring-co/buzzle-action-merge-videos.git",
     "buzzle-action-upload": "https://github.com/spiring-co/buzzle-action-upload.git",
     "buzzle-action-watermark": "https://github.com/spiring-co/buzzle-action-watermark.git",
     "dotenv": "^8.2.0",
     "externalip": "^1.0.2",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
+    "pm2": "^4.5.5",
     "public-ip": "^4.0.3",
     "shortid": "^2.2.16",
     "socket.io-client": "^3.1.1"
