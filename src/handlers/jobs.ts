@@ -7,6 +7,9 @@ import { render } from "@nexrender/core";
 import { ChildProcess } from "child_process";
 import toNexrenderJob from "../helpers/toNexrenderJob";
 import * as _ from "lodash";
+import logger from "../helpers/logger"
+import * as winston from "winston";
+import 'winston-socket.io'
 
 dotenv.config();
 const { API_URL, SOCKET_SERVER, API_TOKEN } = process.env;
@@ -17,6 +20,7 @@ let currentJob: string = null;
 let runningInstance: ChildProcess = null;
 
 const settings: any = {
+  logger,
   stopOnError: true,
   workpath: path.join(process.cwd(), "renders"),
   skipCleanup: true,
@@ -99,16 +103,30 @@ const renderJob = async (job) => {
   try {
     // convert to nexrender job
     job = toNexrenderJob(job);
-    settings.logger = socketLogger(job.uid)
+
+    // add loggers 
+    settings.logger
+      .add(new winston.transports.File({
+        filename: `${path.join(process.cwd(), "renders")}/console-${job.uid
+          }.log`
+      }))
+      .add(new winston.transports.SocketIO(
+        {
+          host: SOCKET_SERVER,
+          port: 8080,
+          secure: true,
+          reconnect: true,
+          namespace: "job-logs",
+          log_topic: "job-logs"
+        }
+      ));
+
     // update status to started on API
     await updateJob(job.uid, {
       state: "started",
       dateStarted: new Date().toISOString(),
     });
-    socket.emit("job-progress", job, {
-      state: "started",
-    });
-
+    
     // TODO add socket implementation
     job.onRenderProgress = (job, progress) => {
       socket.emit("job-progress", job, {
@@ -116,6 +134,12 @@ const renderJob = async (job) => {
         progress,
       });
     };
+
+    job.onChange = (job, state) => {
+      socket.emit("job-progress", job, {
+        state,
+      });
+    }
 
     job = await render(job, settings);
 
@@ -126,10 +150,6 @@ const renderJob = async (job) => {
       dateFinished: new Date().toISOString(),
     });
 
-    socket.emit("job-progress", job, {
-      state: "finished",
-    });
-
   } catch (e) {
     await updateJob(job.uid, {
       state: "error",
@@ -137,7 +157,7 @@ const renderJob = async (job) => {
       failureReason: e.message,
     });
     socket.emit("job-progress", job, {
-      state: "error",
+      state: "Error",
     });
     console.log(e);
   } finally {

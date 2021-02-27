@@ -9,6 +9,8 @@ const DEFAULT_OUTPUT_EXT = "mov";
 
 export default function (job) {
   // find version index
+  console.log(job)
+
   const versionIndex = job.videoTemplate.versions.findIndex(
     (v) => v.id === job.idVersion
   );
@@ -90,8 +92,9 @@ export default function (job) {
     outputExt = DEFAULT_OUTPUT_EXT,
     frameStart,
     frameEnd,
-    incrementFrame,
-  } = this.renderPrefs || {};
+    frameIncrement,
+    incrementFrame
+  } = job.renderPrefs || {};
 
   const nxJob = {
     uid: job.id,
@@ -104,10 +107,12 @@ export default function (job) {
       outputExt,
       frameEnd,
       frameStart,
-      incrementFrame,
+      frameIncrement:frameIncrement || incrementFrame,
+      incrementFrame:frameIncrement || incrementFrame
     },
     assets: [...job.videoTemplate.staticAssets, ...assets],
     actions: { prerender, postrender },
   };
+  console.log(nxJob)
   return nxJob;
 }
