@@ -24,7 +24,7 @@ export default function (channel: amqp.Channel) {
       }
       
       // successfully processed message
-      consumed ? channel.ack(message) : channel.reject(message);
+      // consumed ? channel.ack(message) : channel.reject(message);
     } catch (e) {
       console.error(e);
     }
