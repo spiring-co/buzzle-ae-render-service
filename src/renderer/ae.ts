@@ -99,8 +99,8 @@ const renderJob = async (job) => {
     });
 
     wLogger.error(e.message || e.msg);
-    if (fs.existsSync(`${renderPath}/id`))
-      rimraf.sync(`${renderPath}/id`);
+    if (fs.existsSync(`${renderPath}/${id}`))
+      rimraf.sync(`${renderPath}/${id}`);
   });
 
 
@@ -122,9 +122,9 @@ const renderJob = async (job) => {
 
   runningInstance = null;
   currentJob = null;
-  
-  if (fs.existsSync(`${renderPath}/id`))
-    rimraf.sync(`${renderPath}/id`);
+
+  if (fs.existsSync(`${renderPath}/${id}`))
+    rimraf.sync(`${renderPath}/${id}`);
 
   return renderSuccess;
 }
