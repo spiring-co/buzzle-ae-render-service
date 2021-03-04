@@ -6,9 +6,9 @@
   "scripts": {
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc && node dist/app.js",
+    "compile": "tsc",
     "dev": "nodemon -e ts  --exec \"npm run compile\"",
-    "start-prod": "pm2 start dist/app.js --name Render-Node"
+    "start-prod": "tsc && pm2 start dist/app.js --name renderer --log ./all.log --time"
   },
   "author": "Harsh Bhatia",
   "license": "ISC",
@@ -28,6 +28,7 @@
     "node-fetch": "^2.6.1",
     "pm2": "^4.5.5",
     "public-ip": "^4.0.3",
+    "rimraf": "^3.0.2",
     "shortid": "^2.2.16",
     "socket.io-client": "^3.1.1",
     "winston": "^3.3.3",

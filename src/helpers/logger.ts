@@ -8,7 +8,7 @@ export default function logger(socket, id, consoleLogPath) {
   return {
     log: (...data) => {
       console.log(...data);
-      logs.push({ level: "info", data, line });
+      logs.push({ level: "info", data, line, timestamp: new Date().toLocaleString() });
       socket.emit("job-logs", { id, logs });
       fs.writeFileSync(consoleLogPath, JSON.stringify(logs));
 

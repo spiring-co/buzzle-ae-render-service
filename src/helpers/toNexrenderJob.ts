@@ -58,6 +58,7 @@ export default function (job) {
 
   let postrender = [];
 
+
   const hasEncodeOption = job.actions.postrender.some(
     (a) => a.module === "buzzle-action-handbrake"
   );
@@ -68,6 +69,14 @@ export default function (job) {
     });
 
   postrender = postrender.concat(job.actions.postrender || []);
+
+  postrender = postrender.map(a => {
+    if (a.module.includes("buzzle")) {
+      return a
+    } else {
+      return { ...a, module: "buzzle-" + a.module }
+    }
+  })
 
   const hasUploadAction = job.actions.postrender.some(
     (a) => a.module === "buzzle-action-upload"
@@ -105,8 +114,8 @@ export default function (job) {
       outputExt,
       frameEnd,
       frameStart,
-      frameIncrement:frameIncrement || incrementFrame,
-      incrementFrame:frameIncrement || incrementFrame
+      frameIncrement: frameIncrement || incrementFrame,
+      incrementFrame: frameIncrement || incrementFrame
     },
     assets: [...job.videoTemplate.staticAssets, ...assets],
     actions: { prerender, postrender },
