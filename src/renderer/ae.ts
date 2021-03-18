@@ -108,7 +108,6 @@ const renderJob = async (job) => {
         startsAt: stateChangedAt,
         endsAt: stateChangedAt
       })
-      console.log(timeline)
     } else if (state === 'render:dorender') {
       timeline.push({
         state: "Rendering",
@@ -143,6 +142,7 @@ const renderJob = async (job) => {
         : {}),
       ...(state === "render:cleanup"
         ? {
+          timeline,
           dateFinished: new Date().toISOString(),
           output: { label: "new", src: job.output },
           state: "finished"
