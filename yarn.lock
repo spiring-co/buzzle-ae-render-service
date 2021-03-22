@@ -528,7 +528,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-add-thumbnail@https://github.com/spiring-co/buzzle-action-add-thumbnail.git":
   version "1.0.6"
-  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#3bd5ce67d63960bb6ab3fdd71e0e4ce298a0f0a4"
+  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#812f35ee26b98ce458b0321b5ba2d42b1099a0ea"
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
@@ -548,7 +548,11 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-merge-videos@https://github.com/spiring-co/buzzle-action-merge-videos.git":
   version "1.2.2"
+<<<<<<< HEAD
   resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#28015b49d333e3c080b73c42b039e42d393f687f"
+=======
+  resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#77f6b3ee6d22672a47a35df53525ca32ab61af78"
+>>>>>>> f5c05285172f2bb50496861bfb404120e414b769
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
