@@ -528,7 +528,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-add-thumbnail@https://github.com/spiring-co/buzzle-action-add-thumbnail.git":
   version "1.0.6"
-  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#9cd0efaf66a048c9cae96b03ccd781e61ee6af8d"
+  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#3bd5ce67d63960bb6ab3fdd71e0e4ce298a0f0a4"
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
@@ -536,10 +536,11 @@ buffer@^5.2.1, buffer@^5.5.0:
     node-fetch "^2.6.0"
     node-fetch-progress "^1.0.2"
     sharp "^0.27.2"
+    stream "0.0.2"
 
-"buzzle-action-handbrake@https://github.com/spiring-co/buzzle-action-handbrake":
+"buzzle-action-handbrake@https://github.com/spiring-co/buzzle-action-handbrake.git":
   version "1.0.0"
-  resolved "https://github.com/spiring-co/buzzle-action-handbrake#4edfb82f58a0ab2773cbb6e506348e27a9ae9b38"
+  resolved "https://github.com/spiring-co/buzzle-action-handbrake.git#4a5a5374b554fd314a62a3721c9f67b0d777aeff"
   dependencies:
     fs "0.0.1-security"
     handbrake-js "^5.0.2"
@@ -547,7 +548,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-merge-videos@https://github.com/spiring-co/buzzle-action-merge-videos.git":
   version "1.2.2"
-  resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#5d3aa4b61cc5f462c9a340e65a4b75ca7bda7d1f"
+  resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#28015b49d333e3c080b73c42b039e42d393f687f"
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
@@ -564,7 +565,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-watermark@https://github.com/spiring-co/buzzle-action-watermark.git":
   version "1.0.7"
-  resolved "https://github.com/spiring-co/buzzle-action-watermark.git#36e822aaafb7fb5717941b5e9b4e6393df9498b7"
+  resolved "https://github.com/spiring-co/buzzle-action-watermark.git#0e79af4466bf7696c12a3f56a7d383b480f0df1a"
   dependencies:
     fluent-ffmpeg "^2.1.2"
     node-fetch "^2.6.0"
@@ -1016,6 +1017,11 @@ duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
+
+emitter-component@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/emitter-component/-/emitter-component-1.1.1.tgz#065e2dbed6959bf470679edabeaf7981d1003ab6"
+  integrity sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
 
 emitter-listener@^1.1.1:
   version "1.1.2"
@@ -2676,6 +2682,13 @@ stack-trace@0.0.x:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
+
+stream@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/stream/-/stream-0.0.2.tgz#7f5363f057f6592c5595f00bc80a27f5cec1f0ef"
+  integrity sha1-f1Nj8Ff2WSxVlfALyAon9c7B8O8=
+  dependencies:
+    emitter-component "^1.1.1"
 
 string-width@^1.0.1:
   version "1.0.2"

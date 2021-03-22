@@ -143,6 +143,7 @@ const renderJob = async (job) => {
         : {}),
       ...(state === "render:cleanup"
         ? {
+          timeline,
           dateFinished: new Date().toISOString(),
           output: { label: "new", src: job.output },
           state: "finished"

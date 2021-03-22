@@ -20,7 +20,7 @@
     "aws-sdk": "^2.693.0",
     "buzzle-action-add-audio": "https://github.com/spiring-co/buzzle-action-add-audio.git",
     "buzzle-action-add-thumbnail": "https://github.com/spiring-co/buzzle-action-add-thumbnail.git",
-    "buzzle-action-handbrake": "https://github.com/spiring-co/buzzle-action-handbrake",
+    "buzzle-action-handbrake": "https://github.com/spiring-co/buzzle-action-handbrake.git",
     "buzzle-action-merge-videos": "https://github.com/spiring-co/buzzle-action-merge-videos.git",
     "buzzle-action-upload": "https://github.com/spiring-co/buzzle-action-upload.git",
     "buzzle-action-watermark": "https://github.com/spiring-co/buzzle-action-watermark.git",
