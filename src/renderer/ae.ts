@@ -57,30 +57,30 @@ const renderJob = async (job) => {
   // add loggers
 
   settings.logger = wLogger;
-  job.actions.prerender= job.actions.prerender.map((action) => {
+  job.actions.prerender = job.actions.prerender.map((action) => {
     action.onStart = () => {
-    timeline.push({ state: `render:prerender:${action.module}`, startsAt: Date.now() })
+      timeline.push({ state: `render:prerender:${action.module}`, startsAt: Date.now() })
     }
     action.onComplete = () => {
-      timeline= timeline.map(d => d.state === `render:prerender:${action.module}` ? ({ ...d, endsAt: Date.now() }) : d)
+      timeline = timeline.map(d => d.state === `render:prerender:${action.module}` ? ({ ...d, endsAt: Date.now() }) : d)
     }
 
     return action
   })
 
-  job.actions.postrender=job.actions.postrender.map((action) => {
+  job.actions.postrender = job.actions.postrender.map((action) => {
     action.onStart = () => {
-     timeline.push({ state: `render:postrender:${action.module}`, startsAt: Date.now(), endsAt: Date.now() })
+      timeline.push({ state: `render:postrender:${action.module}`, startsAt: Date.now(), endsAt: Date.now() })
     }
     action.onComplete = () => {
-      timeline= timeline.map(d => d.state === `render:postrender:${action.module}` ? ({ ...d, endsAt: Date.now() }) : d)
+      timeline = timeline.map(d => d.state === `render:postrender:${action.module}` ? ({ ...d, endsAt: Date.now() }) : d)
     }
 
     return action
   })
 
   job.onRenderProgress = (job, progress) => {
-   timeline= timeline.map(d => d.state === 'Rendering' ? ({ ...d, endsAt: Date.now() }) : d)
+    timeline = timeline.map(d => d.state === 'Rendering' ? ({ ...d, endsAt: Date.now() }) : d)
     socket.emit("job-progress", {
       id: id,
       state: "Rendering",
@@ -92,9 +92,9 @@ const renderJob = async (job) => {
   job.onChange = (job, state) => {
     wLogger.log("State changed to: " + state);
     const stateChangedAt = Date.now()
-    if(timeline.length){
-      console.log("Setting End time for this ",timeline[timeline.length - 1].state)
-    timeline[timeline.length - 1].endsAt = stateChangedAt
+    if (timeline.length) {
+      console.log("Setting End time for this ", timeline[timeline.length - 1].state)
+      timeline[timeline.length - 1].endsAt = stateChangedAt
     }
     if (state === "render:setup") {
       timeline.push({
@@ -108,7 +108,6 @@ const renderJob = async (job) => {
         startsAt: stateChangedAt,
         endsAt: stateChangedAt
       })
-      console.log(timeline)
     } else if (state === 'render:dorender') {
       timeline.push({
         state: "Rendering",
@@ -143,6 +142,7 @@ const renderJob = async (job) => {
         : {}),
       ...(state === "render:cleanup"
         ? {
+          timeline,
           dateFinished: new Date().toISOString(),
           output: { label: "new", src: job.output },
           state: "finished"
@@ -197,8 +197,15 @@ const renderJob = async (job) => {
   runningInstance = null;
   currentJob = null;
 
-  if (fs.existsSync(`${renderPath}/${id}`))
-    rimraf.sync(`${renderPath}/${id}`);
+  if (fs.existsSync(`${renderPath}/${id}`)) {
+    try {
+      rimraf.sync(`${renderPath}/${id}`);
+
+    } catch (e) {
+      console.warn("Could not cleanup job");
+      console.warn(e)
+    }
+  }
 
   return renderSuccess;
 }
