@@ -13,7 +13,7 @@
   "author": "Harsh Bhatia",
   "license": "ISC",
   "dependencies": {
-    "@nexrender/core": "^1.24.3",
+    "@nexrender/core": "^1.26.1",
     "@nexrender/types": "^1.24.2",
     "@types/lodash": "^4.14.168",
     "amqplib": "^0.6.0",
