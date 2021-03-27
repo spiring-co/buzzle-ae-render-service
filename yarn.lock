@@ -546,6 +546,12 @@ buffer@^5.2.1, buffer@^5.5.0:
     handbrake-js "^5.0.2"
     path "^0.12.7"
 
+"buzzle-action-install-fonts@https://github.com/spiring-co/buzzle-action-install-fonts.git":
+  version "1.0.8"
+  resolved "https://github.com/spiring-co/buzzle-action-install-fonts.git#87a54d1511fb846a4d1d73d97efc86bbdf295d3a"
+  dependencies:
+    child_process "^1.0.2"
+
 "buzzle-action-merge-videos@https://github.com/spiring-co/buzzle-action-merge-videos.git":
   version "1.2.2"
   resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#77f6b3ee6d22672a47a35df53525ca32ab61af78"
@@ -601,6 +607,11 @@ charm@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
   integrity sha1-BsIe7RobBq62dVPNxT4jJ0usIpY=
+
+child_process@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/child_process/-/child_process-1.0.2.tgz#b1f7e7fc73d25e7fd1d455adc94e143830182b5a"
+  integrity sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=
 
 chokidar@^3.5.1:
   version "3.5.1"

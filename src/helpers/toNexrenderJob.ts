@@ -68,6 +68,11 @@ export default function (job) {
   const hasEncodeOption = job.actions.postrender.some(
     (a) => a.module === "buzzle-action-handbrake"
   );
+if(!hasFontAction){
+ //TODO Deicide font action has to be compulsory or not
+ //if yes we had to access fonts from videotemplate or job should be populated here
+}
+
   if (!hasEncodeOption)
     postrender.push({
       module: "buzzle-action-handbrake",
