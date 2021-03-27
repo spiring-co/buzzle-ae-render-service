@@ -23,7 +23,6 @@ const renderJob = async (job) => {
   const aeLogPath = `${renderPath}/aerender-${id}.log`;
   const wLogger = logger(socket, id, consoleLogPath);
   let timeline = []
-  let startedTime = Date.now()
   const settings: any = {
     stopOnError: true,
     workpath: path.join(process.cwd(), "renders"),
@@ -39,7 +38,7 @@ const renderJob = async (job) => {
   try {
     ({ instanceId, ipv4 } = await getInstanceInfo())
   } catch (err) {
-    console.log(err)
+    console.warn("Error getting instance info: ", err.message)
   }
   let renderSuccess = true;
   // convert to nexrender job
@@ -151,10 +150,11 @@ const renderJob = async (job) => {
     });
   };
 
-
-  job = await render(job, settings).catch(e => {
+  try {
+    job = await render(job, settings)
+  }
+  catch (e) {
     renderSuccess = false;
-
     // update error reason
     updateJob(id, {
       state: "error",
@@ -162,36 +162,48 @@ const renderJob = async (job) => {
     });
 
     wLogger.error(e.message || e.msg);
-    if (fs.existsSync(`${renderPath}/${id}`))
-      rimraf.sync(`${renderPath}/${id}`);
-  });
+    try {
+      if (fs.existsSync(`${renderPath}/${id}`))
+        rimraf.sync(`${renderPath}/${id}`);
+    } catch (err) {
+      console.warn("Something went wrong: ", err.message)
+    }
+  };
 
 
   // upload logs
   if (fs.existsSync(aeLogPath)) {
-    const file = fs.readFileSync(aeLogPath, "utf8");
-    const task = await fileUpload(`${Date.now()}log_file_ae_${id}.txt`, file)
-    const { Location: url } = await task.promise()
-    await updateJob(id, {
-      logs: {
-        label: "ae",
-        text: url,
-        rendererInstance: { ipv4, instanceId }
-      },
-    });
+    try {
+      const file = fs.readFileSync(aeLogPath, "utf8");
+      const task = await fileUpload(`${Date.now()}log_file_ae_${id}.txt`, file)
+      const { Location: url } = await task.promise()
+      await updateJob(id, {
+        logs: {
+          label: "ae",
+          text: url,
+          rendererInstance: { ipv4, instanceId }
+        },
+      });
+    } catch (err) {
+      console.warn("Something went wrong while updating ae logs/uploading Logs: ", err.message)
+    }
   }
 
   if (fs.existsSync(consoleLogPath)) {
-    const file = fs.readFileSync(consoleLogPath, "utf8");
-    const task = await fileUpload(`${Date.now()}log_file_console_${id}.txt`, file)
-    const { Location: url } = await task.promise()
-    await updateJob(id, {
-      logs: {
-        label: "console",
-        text: url,
-        rendererInstance: { ipv4, instanceId }
-      },
-    });
+    try {
+      const file = fs.readFileSync(consoleLogPath, "utf8");
+      const task = await fileUpload(`${Date.now()}log_file_console_${id}.txt`, file)
+      const { Location: url } = await task.promise()
+      await updateJob(id, {
+        logs: {
+          label: "console",
+          text: url,
+          rendererInstance: { ipv4, instanceId }
+        },
+      });
+    } catch (err) {
+      console.warn("Something went wrong while updating console logs/uploading Logs: ", err.message)
+    }
   }
 
   runningInstance = null;
