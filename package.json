@@ -13,7 +13,7 @@
   "author": "Harsh Bhatia",
   "license": "ISC",
   "dependencies": {
-    "@nexrender/core": "^1.24.3",
+    "@nexrender/core": "^1.26.1",
     "@nexrender/types": "^1.24.2",
     "@types/lodash": "^4.14.168",
     "amqplib": "^0.6.0",
@@ -21,6 +21,7 @@
     "buzzle-action-add-audio": "https://github.com/spiring-co/buzzle-action-add-audio.git",
     "buzzle-action-add-thumbnail": "https://github.com/spiring-co/buzzle-action-add-thumbnail.git",
     "buzzle-action-handbrake": "https://github.com/spiring-co/buzzle-action-handbrake.git",
+    "buzzle-action-install-fonts": "https://github.com/spiring-co/buzzle-action-install-fonts.git",
     "buzzle-action-merge-videos": "https://github.com/spiring-co/buzzle-action-merge-videos.git",
     "buzzle-action-upload": "https://github.com/spiring-co/buzzle-action-upload.git",
     "buzzle-action-watermark": "https://github.com/spiring-co/buzzle-action-watermark.git",

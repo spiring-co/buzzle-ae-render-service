@@ -11,7 +11,7 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@nexrender/core@^1.24.3":
+"@nexrender/core@^1.26.1":
   version "1.26.1"
   resolved "https://registry.yarnpkg.com/@nexrender/core/-/core-1.26.1.tgz#3e94654b7a0df68d0a6e23cd9e91af60753904fa"
   integrity sha512-nBdHIP9wBYSthhyr+fzQCT9iH3XEMeGE7yVk7oKaRtrzwlOK/pkuYYlgLx8sqdhtZ+YSXnP3XGqF+puQl5supw==
@@ -513,7 +513,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-add-thumbnail@https://github.com/spiring-co/buzzle-action-add-thumbnail.git":
   version "1.0.6"
-  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#b609243eaa366eefa4b89f7937411d10027d65a6"
+  resolved "https://github.com/spiring-co/buzzle-action-add-thumbnail.git#812f35ee26b98ce458b0321b5ba2d42b1099a0ea"
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
@@ -531,9 +531,15 @@ buffer@^5.2.1, buffer@^5.5.0:
     handbrake-js "^5.0.2"
     path "^0.12.7"
 
+"buzzle-action-install-fonts@https://github.com/spiring-co/buzzle-action-install-fonts.git":
+  version "1.0.8"
+  resolved "https://github.com/spiring-co/buzzle-action-install-fonts.git#87a54d1511fb846a4d1d73d97efc86bbdf295d3a"
+  dependencies:
+    child_process "^1.0.2"
+
 "buzzle-action-merge-videos@https://github.com/spiring-co/buzzle-action-merge-videos.git":
   version "1.2.2"
-  resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#28015b49d333e3c080b73c42b039e42d393f687f"
+  resolved "https://github.com/spiring-co/buzzle-action-merge-videos.git#77f6b3ee6d22672a47a35df53525ca32ab61af78"
   dependencies:
     ffprobe "^1.1.2"
     ffprobe-static "^3.0.0"
@@ -550,7 +556,7 @@ buffer@^5.2.1, buffer@^5.5.0:
 
 "buzzle-action-watermark@https://github.com/spiring-co/buzzle-action-watermark.git":
   version "1.0.7"
-  resolved "https://github.com/spiring-co/buzzle-action-watermark.git#3a886752b066f2995bca9fdd0daf9a18fd6af732"
+  resolved "https://github.com/spiring-co/buzzle-action-watermark.git#0e79af4466bf7696c12a3f56a7d383b480f0df1a"
   dependencies:
     fluent-ffmpeg "^2.1.2"
     node-fetch "^2.6.0"
@@ -586,6 +592,11 @@ charm@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
   integrity sha1-BsIe7RobBq62dVPNxT4jJ0usIpY=
+
+child_process@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/child_process/-/child_process-1.0.2.tgz#b1f7e7fc73d25e7fd1d455adc94e143830182b5a"
+  integrity sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=
 
 chokidar@^3.5.1:
   version "3.5.1"

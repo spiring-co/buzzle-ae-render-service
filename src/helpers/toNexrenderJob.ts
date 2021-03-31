@@ -1,6 +1,5 @@
 import * as path from 'path'
 import * as shortid from "shortid";
-// const { compress, upload, installFonts } = require("./defaultNexrenderActions");
 
 const defaultTypes = { image: "png", audio: "mp3", video: "mp4" };
 const DEFAULT_SETTINGS_TEMPlATE = "half";
@@ -18,12 +17,19 @@ export default function (job) {
 
   // convert data to assets
   const assets = [];
-  const { fields } = job.videoTemplate.versions[versionIndex];
+  const { fields = null } = job.videoTemplate.versions[versionIndex];
 
+  if(!fields) {
+    throw new Error("Version has no fields");
+
+  }
   if (job.data) {
     Object.keys(job.data).map((k) => {
       const field = fields.find((f) => f.key === k);
-
+      if(!field || !field.rendererData) {
+        console.warn(`Field ${k} is present in job data but does not exist `);
+        return
+      }
       let asset = field.rendererData;
 
       if (["file", "image", "audio", "video"].includes(field.type)) {
@@ -62,6 +68,11 @@ export default function (job) {
   const hasEncodeOption = job.actions.postrender.some(
     (a) => a.module === "buzzle-action-handbrake"
   );
+if(!hasFontAction){
+ //TODO Deicide font action has to be compulsory or not
+ //if yes we had to access fonts from videotemplate or job should be populated here
+}
+
   if (!hasEncodeOption)
     postrender.push({
       module: "buzzle-action-handbrake",
