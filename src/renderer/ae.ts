@@ -147,7 +147,7 @@ const renderJob = async (job) => {
           state: "finished"
         }
         : {}),
-    });
+    }).then(console.log);
   };
 
   try {
