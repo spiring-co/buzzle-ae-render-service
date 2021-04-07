@@ -102,7 +102,6 @@ if(!hasFontAction){
         key: `outputs/${job.id}_${Date.now()}.mp4`,
         acl: "public-read",
         ContentType:'video/mp4'
-
       },
     });
 
