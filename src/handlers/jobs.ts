@@ -10,7 +10,6 @@ export default async function (data: any, eventType: string): Promise<boolean> {
   // console.log(eventType, _.pick(data, ["updates", "extra"], data.job.id))
   let { job, updates = false, extra = false } = data;
   //check if job still there (not deleted)
-  console.log("Starting: ",job.id)
   let jobExists=true
   try{
    jobExists = await isJobExist(job.id)
@@ -18,7 +17,7 @@ export default async function (data: any, eventType: string): Promise<boolean> {
   }catch(err){
     console.log("Error in fetching job exist:",err)
   }
-  if (jobExists) {
+  if (jobExists&&job.id) {
   switch (eventType) {
     case "created":
       return await renderJob(job);
