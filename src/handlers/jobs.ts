@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import * as _ from "lodash";
 import renderJob from "../renderer/ae";
+import { isJobExist } from "../helpers/buzzleOperations";
 
 dotenv.config();
 
@@ -8,7 +9,16 @@ dotenv.config();
 export default async function (data: any, eventType: string): Promise<boolean> {
   // console.log(eventType, _.pick(data, ["updates", "extra"], data.job.id))
   let { job, updates = false, extra = false } = data;
-
+  //check if job still there (not deleted)
+  console.log("Starting: ",job.id)
+  let jobExists=true
+  try{
+   jobExists = await isJobExist(job.id)
+   console.log("Job Exist:",jobExists)
+  }catch(err){
+    console.log("Error in fetching job exist:",err)
+  }
+  if (jobExists) {
   switch (eventType) {
     case "created":
       return await renderJob(job);
@@ -35,6 +45,9 @@ export default async function (data: any, eventType: string): Promise<boolean> {
     case "deleted":
       break;
   }
+  return true
+  } else {
+    return false
+  }
 
-  return true;
 }

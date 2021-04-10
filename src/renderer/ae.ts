@@ -5,7 +5,7 @@ import * as rimraf from "rimraf";
 import { render } from "@nexrender/core";
 import { ChildProcess } from "child_process"
 import logger from "../helpers/logger";
-import updateJob from "../helpers/updateJob";
+import {updateJob,isJobExist} from "../helpers/buzzleOperations";
 import toNexrenderJob from "../helpers/toNexrenderJob";
 import getInstanceInfo from "../helpers/instanceInfo"
 import fileUpload from "../helpers/fileUpload"
