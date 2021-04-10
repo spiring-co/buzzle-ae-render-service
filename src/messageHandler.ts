@@ -12,6 +12,7 @@ export default function (channel: amqp.Channel) {
     } catch (e) {
       console.error("Invalid message format");
       channel.reject(message);
+      return ;
     }
 
     let consumed = false;

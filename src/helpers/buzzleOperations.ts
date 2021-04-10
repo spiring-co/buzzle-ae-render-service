@@ -17,6 +17,7 @@ export const updateJob=async (uid, body) => {
 };
 
 export const isJobExist=async (uid) => {
+  if(!uid) return false
   const res = await fetch(`${API_URL}/jobs/${uid}`, {
     method: "GET",
     headers: {
