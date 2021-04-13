@@ -19,14 +19,14 @@ export default function (job) {
   const assets = [];
   const { fields = null } = job.videoTemplate.versions[versionIndex];
 
-  if(!fields) {
+  if (!fields) {
     throw new Error("Version has no fields");
 
   }
   if (job.data) {
     Object.keys(job.data).map((k) => {
       const field = fields.find((f) => f.key === k);
-      if(!field || !field.rendererData) {
+      if (!field || !field.rendererData) {
         console.warn(`Field ${k} is present in job data but does not exist `);
         return
       }
@@ -68,10 +68,10 @@ export default function (job) {
   const hasEncodeOption = job.actions.postrender.some(
     (a) => a.module === "buzzle-action-handbrake"
   );
-if(!hasFontAction){
- //TODO Deicide font action has to be compulsory or not
- //if yes we had to access fonts from videotemplate or job should be populated here
-}
+  if (!hasFontAction) {
+    //TODO Deicide font action has to be compulsory or not
+    //if yes we had to access fonts from videotemplate or job should be populated here
+  }
 
   if (!hasEncodeOption)
     postrender.push({
@@ -101,10 +101,10 @@ if(!hasFontAction){
         bucket: "spiring-creator",
         key: `outputs/${job.id}_${Date.now()}.mp4`,
         acl: "public-read",
-        ContentType:'video/mp4'
+        ContentType: 'video/mp4'
       },
+      tags: [{ Key: 'deleteAfter90Days', Value: '90 Days' }]
     });
-
   const {
     settingsTemplate = DEFAULT_SETTINGS_TEMPlATE,
     outputModule = DEFAULT_OUTPUT_MODULE,

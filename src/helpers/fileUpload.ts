@@ -1,11 +1,16 @@
 import AWS from "aws-sdk";
-
-const bucketName = "spiring-logs";
+const tagsByUseCase = {
+  'archive': 'true',
+  "deleteAfter7Days": '1 week',
+  "deleteAfter90Days": '90 Days'
+}
+const bucketName = "spiring-creator";
 /**
  * @param  {String} Key Path of the file
  * @param  {} Body File body
  */
-export default (Key, Body) => {
+export default (Key, Body, tag = 'archive') => {
+  console.log([tagsByUseCase[tag]])
   var upload = new AWS.S3.ManagedUpload({
     partSize: 15 * 1024 * 1024,
     queueSize: 5,
@@ -15,6 +20,7 @@ export default (Key, Body) => {
       Body,
       ACL: "public-read",
     },
+    tags: [{ Key:tag,Value:tagsByUseCase[tag]}]
   });
 
   return upload;

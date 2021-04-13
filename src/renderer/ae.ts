@@ -175,7 +175,7 @@ const renderJob = async (job) => {
   if (fs.existsSync(aeLogPath)) {
     try {
       const file = fs.readFileSync(aeLogPath, "utf8");
-      const task = await fileUpload(`${Date.now()}log_file_ae_${id}.txt`, file)
+      const task = await fileUpload(`logs/${Date.now()}log_file_ae_${id}.txt`, file,'deleteAfter7Days')
       const { Location: url } = await task.promise()
       await updateJob(id, {
         logs: {
@@ -192,7 +192,7 @@ const renderJob = async (job) => {
   if (fs.existsSync(consoleLogPath)) {
     try {
       const file = fs.readFileSync(consoleLogPath, "utf8");
-      const task = await fileUpload(`${Date.now()}log_file_console_${id}.txt`, file)
+      const task = await fileUpload(`logs/${Date.now()}log_file_console_${id}.txt`, file,'deleteAfter7Days')
       const { Location: url } = await task.promise()
       await updateJob(id, {
         logs: {
