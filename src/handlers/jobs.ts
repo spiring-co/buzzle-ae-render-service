@@ -11,13 +11,14 @@ export default async function (data: any, eventType: string): Promise<boolean> {
   let { job, updates = false, extra = false } = data;
   //check if job still there (not deleted)
   let jobExists = true
+  let isJobOfAE=job?.videoTemplate?.type==='ae'
   try {
     jobExists = await isJobExist(job?.id)
     console.log("Job Exist:", jobExists)
   } catch (err) {
     console.log("Error in fetching job exist:", err)
   }
-  if (jobExists && job?.id) {
+  if (jobExists && job?.id&&isJobOfAE) {
     switch (eventType) {
       case "created":
         return await renderJob(job);
